@@ -1,9 +1,9 @@
-import React, { useEffect, Suspense, useState } from 'react';
-import Filter from './components/filters';
+import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchProducts } from './redux/actions/productActions';
 import { loadCart, addProduct, removeProduct, addProductQuantity, subProductQuantity } from "./redux/actions/cartActions";
 import Product from './components/product';
+import CartItem from './components/cartItem';
 
 const App = (props) => {
 
@@ -20,7 +20,6 @@ const App = (props) => {
       //console.log(Data);
       setData(Data);
     });
-
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -38,20 +37,17 @@ const App = (props) => {
   }, [currentSelectedSizes]);
 
   const filter = (e, size) => {
-    console.log("changed");
-    console.log(size);
-    console.log(e.target.checked);
+    /*  console.log("changed");
+        console.log(size);
+        console.log(e.target.checked); */
     if (e.target.checked) {
       setCurrentSelectedSizes([...currentSelectedSizes, size]);
-
     } else {
-      //setCurrentSelectedSizes([...currentSelectedSizes, size]);
       if (currentSelectedSizes.length > 0) {
         let newCurrentSelectedSizes = currentSelectedSizes.filter(item => item !== size);
         setCurrentSelectedSizes(newCurrentSelectedSizes);
       }
     }
-
   };
 
 
@@ -74,21 +70,16 @@ const App = (props) => {
             <p>{data.length > 0 ? data.length + "Product(s) found." : ""}</p>
           </div>
           <div className="row">
-
-
             {data.length > 0 && data.map(product => (
               <Product product={product} sku={product.sku} title={product.title} price={product.price} isFreeShipping={product.isFreeShipping} key={product.id} />
             )
             )}
-
-
           </div>
         </div>
       </div>
 
       <div className={isOpen ? `float-cart float-cart--open` : `float-cart`} onClick={(e) => { e.preventDefault(); setIsOpen(!isOpen) }}>
         <span className="bag bag--float-cart-closed"><span className="bag__quantity">{props.cart && props.cart.addedItems.length > 0 ? props.cart.addedItems.length : 0}</span></span>
-
         <div className="float-cart__content">
           <div className="float-cart__header">
             <span className="bag">
@@ -98,31 +89,14 @@ const App = (props) => {
           </div>
           <div className="float-cart__shelf-container">
             {props.cart && props.cart.addedItems.length > 0 && props.cart.addedItems.map(item => (
-              <div className="shelf-item" key={item.id}>
-                <div className="shelf-item__del" onClick={() => props.dispatch(removeProduct(item))}></div>
-                <div className="shelf-item__thumb">
-                  <img src={require(`./assets/products/${item.sku}_1.jpg`)} width="60" alt="Dark Thug Blue-Navy T-Shirt" />
-                </div>
-                <div className="shelf-item__details">
-                  <p className="title">{item.title}</p>
-                  <p className="desc">{item.description} <br />Quantity: {item.quantity}</p>
-                </div>
-                <div className="shelf-item__price"><p>$  {item.quantity * item.price}</p><div>
-                  <button className="change-product-button" onClick={(e) => { e.preventDefault(); props.dispatch(subProductQuantity(item)); }}>-</button>
-                  <button className="change-product-button" onClick={() => props.dispatch(addProductQuantity(item))}>+</button>
-                </div>
-                </div>
-              </div>
+              <CartItem product={item} quantity={item.quantity} key={item.id} />
             ))}
-
-
           </div>
 
           <div className="float-cart__footer">
             <div className="sub">SUBTOTAL</div>
             <div className="sub-price">
-              <p className="sub-price__val">$ {props.cart && props.cart.total ? parseFloat(props.cart.total).toFixed(2) : ""}</p>
-
+              <p className="sub-price__val">$ {props.cart && props.cart.total ? parseFloat(props.cart.total).toFixed(2) : "0"}</p>
             </div>
             <div className="buy-btn">Checkout</div>
           </div>

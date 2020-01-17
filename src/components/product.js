@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { addProduct } from '../redux/actions/cartActions';
 
 const Product = (props) => {
-    const { id, sku, title, description, availableSizes, price, isFreeShipping, product, addProduct } = props;
+    const { id, sku, title, price, isFreeShipping, product, addProduct } = props;
     return (
         <div className="col-md-3">
             <div className="shelf-item" data-sku={sku}>
