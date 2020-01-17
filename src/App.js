@@ -13,11 +13,8 @@ const App = (props) => {
 
   const [data, setData] = useState([]);
 
-  //const [isOpen, setIsOpen] = useState(false);
-
   useEffect(() => {
     props.dispatch(fetchProducts()).then((Data) => {
-      //console.log(Data);
       setData(Data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -30,16 +27,12 @@ const App = (props) => {
 
   useEffect(() => {
     props.dispatch(fetchProducts(currentSelectedSizes)).then((Data) => {
-      //console.log(Data);
       setData(Data);
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentSelectedSizes]);
 
   const filter = (e, size) => {
-    /*  console.log("changed");
-        console.log(size);
-        console.log(e.target.checked); */
     if (e.target.checked) {
       setCurrentSelectedSizes([...currentSelectedSizes, size]);
     } else {
