@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { fetchProducts } from './redux/actions/productActions';
-import { loadCart, addProduct, removeProduct, addProductQuantity, subProductQuantity } from "./redux/actions/cartActions";
+import { loadCart, toggleCart, addProduct, removeProduct, addProductQuantity, subProductQuantity } from "./redux/actions/cartActions";
 import Product from './components/product';
 import CartItem from './components/cartItem';
 
@@ -13,7 +13,7 @@ const App = (props) => {
 
   const [data, setData] = useState([]);
 
-  const [isOpen, setIsOpen] = useState(false);
+  //const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     props.dispatch(fetchProducts()).then((Data) => {
@@ -78,8 +78,10 @@ const App = (props) => {
         </div>
       </div>
 
-      <div className={isOpen ? `float-cart float-cart--open` : `float-cart`} onClick={(e) => { e.preventDefault(); setIsOpen(!isOpen) }}>
-        <span className="bag bag--float-cart-closed"><span className="bag__quantity">{props.cart && props.cart.addedItems.length > 0 ? props.cart.addedItems.length : 0}</span></span>
+      <div className={!!props.cart.isOpen ? `float-cart float-cart--open` : `float-cart`} onClick={(e) => { e.preventDefault(); props.dispatch(toggleCart()) }}>
+        <span className="bag bag--float-cart-closed">
+          <span className="bag__quantity">{props.cart && props.cart.addedItems.length > 0 ? props.cart.addedItems.length : 0}</span>
+        </span>
         <div className="float-cart__content">
           <div className="float-cart__header">
             <span className="bag">
@@ -116,6 +118,7 @@ const mapDispatchToProps = (dispatch) => {
     fetchProducts,
     loadCart,
     addProduct,
+    toggleCart,
     addProductQuantity,
     subProductQuantity,
     removeProduct,

@@ -1,4 +1,4 @@
-import { LOAD_CART, ADD_PRODUCT, REMOVE_PRODUCT, CHANGE_PRODUCT_QUANTITY, ADD_QUANTITY, SUB_QUANTITY } from '../actions/actionTypes';
+import { LOAD_CART, TOGGLE_CART, ADD_PRODUCT, REMOVE_PRODUCT, ADD_QUANTITY, SUB_QUANTITY } from '../actions/actionTypes';
 
 const initState = {
     products: [],
@@ -67,7 +67,8 @@ const CartReducer = (state = initState, action) => {
             return {
                 ...state,
                 addedItems: new_items,
-                total: newTotal
+                total: newTotal,
+                isOpen: true
             }
         }
         else {
@@ -88,6 +89,12 @@ const CartReducer = (state = initState, action) => {
         };
     }
 
+    if (action.type === TOGGLE_CART) {
+        return {
+            ...state,
+            isOpen: !state.isOpen
+        };
+    }
 
     return state;
 }

@@ -14,7 +14,7 @@ const CartItem = (props) => {
                 <p className="title">{product.title}</p>
                 <p className="desc">{product.description} <br />Quantity: {quantity}</p>
             </div>
-            <div className="shelf-item__price"><p>$  {quantity * product.price}</p><div>
+            <div className="shelf-item__price"><p>$  {product.quantity * product.price}</p><div>
                 <button className="change-product-button" onClick={(e) => { e.preventDefault(); subProductQuantity(product); }}>-</button>
                 <button className="change-product-button" onClick={() => addProductQuantity(product)}>+</button>
             </div>
